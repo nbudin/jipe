@@ -7,13 +7,16 @@
 // Copyright 2007, thoughtbot, inc.
 // Released under the MIT License.
 
-Jester = {};
+Jester = {}
 Jester.Resource = function(){};
 
 // Doing it this way forces the validation of the syntax but gives flexibility enough to rename the new class.
 Jester.Constructor = function(model){
-  return "function CONSTRUCTOR () { this.klass = CONSTRUCTOR;\nthis.initialize.apply(this, arguments);\n"
-      +"this.after_initialization.apply(this, arguments); }".replace(/CONSTRUCTOR/g, model);
+  return (function CONSTRUCTOR() {
+    this.klass = CONSTRUCTOR;
+    this.initialize.apply(this, arguments);
+    this.after_initialization.apply(this, arguments);
+  }).toString().replace(/CONSTRUCTOR/g, model);
 }
 
 // universal Jester callback holder for remote JSON loading
@@ -37,7 +40,7 @@ Object.extend(Jester.Resource, {
     var default_options = {
       format:   "xml",
       singular: model.underscore(),
-      name:     model,
+      name:     model
     }
     options              = Object.extend(default_options, options);
     options.format       = options.format.toLowerCase();
@@ -47,14 +50,14 @@ Object.extend(Jester.Resource, {
     options.remote       = false;
     
     // Establish prefix
-    var default_prefix = "http://" + window.location.hostname + (window.location.port ? ":" + window.location.port : "")
+    var default_prefix = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ":" + window.location.port : "");
     if (options.prefix && options.prefix.match(/^https?:/))
       options.remote = true;
       
     if (!options.prefix)
       options.prefix = default_prefix;
     
-    if (!options.prefix.match(/^https?:/))
+    if (!options.prefix.match(/^(https?|file):/))
       options.prefix = default_prefix + (options.prefix.match(/^\//) ? "" : "/") + options.prefix;
             
     options.prefix = options.prefix.replace(/\b\/+$/,"");
@@ -105,7 +108,7 @@ Object.extend(Jester.Resource, {
     else
       url += "&";
     url += "callback=jesterCallback";
-    script.src = url
+    script.src = url;
     
     document.firstChild.appendChild(script);
   },
@@ -282,8 +285,8 @@ Object.extend(Jester.Resource, {
   
   _default_urls : function(options) {
     urls = {
-      show : "/" + options.plural + "/:id." + options.format,
-      list : "/" + options.plural + "." + options.format,
+      'show' : "/" + options.plural + "/:id." + options.format,
+      'list' : "/" + options.plural + "." + options.format,
       'new' : "/" + options.plural + "/new." + options.format
     }
     urls.create = urls.list;
@@ -545,7 +548,7 @@ Object.extend(Jester.Resource.prototype, {
     var params = {};
     var urlParams = {};
     (this._properties).each( bind(this, function(value, i) {
-      params[this.klass._singular + "[" + value + "]"] = this[value];
+      params[this.clazz._singular + "[" + value + "]"] = this[value];
       urlParams[value] = this[value];
     }));
     
@@ -561,7 +564,7 @@ Object.extend(Jester.Resource.prototype, {
 
     
     // send the request
-    return this.klass.request(saveWork, url, {parameters: params, method: method}, callback);
+    return this.clazz.request(saveWork, url, {parameters: params, method: method}, callback);
   },
   
   setAttributes : function(attributes)
@@ -747,7 +750,8 @@ function bind(context, func) {
 
 // If there is no object already called Resource, we define one to make things a little cleaner for us.
 if(typeof(Resource) == "undefined")
-  Resource = Jester.Resource
+  Resource = Jester.Resource;
+
 
 
 
