@@ -548,7 +548,7 @@ Object.extend(Jester.Resource.prototype, {
     var params = {};
     var urlParams = {};
     (this._properties).each( bind(this, function(value, i) {
-      params[this.clazz._singular + "[" + value + "]"] = this[value];
+      params[this.klass._singular + "[" + value + "]"] = this[value];
       urlParams[value] = this[value];
     }));
     
@@ -564,7 +564,7 @@ Object.extend(Jester.Resource.prototype, {
 
     
     // send the request
-    return this.clazz.request(saveWork, url, {parameters: params, method: method}, callback);
+    return this.klass.request(saveWork, url, {parameters: params, method: method}, callback);
   },
   
   setAttributes : function(attributes)
