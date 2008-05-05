@@ -4,8 +4,7 @@ module Jipe
   def jipe_editor_for(record, field, options = {})
     options = { :external_control => true,
       :class => record.class.to_s,
-      :rows => 1,
-      :on_complete => nil }.update(options || {})
+      :rows => 1 }.update(options || {})
     rclass = options[:class]
     outstr = <<-ENDDOC
       <script type="text/javascript">
@@ -14,11 +13,22 @@ module Jipe
     ENDDOC
     if options[:external_control]
       outstr += "externalControl: 'edit_#{rclass.downcase}_#{record.id}_#{field}', "
+      options.delete(:external_control)
     end
     if options[:on_complete]
       outstr += "onComplete: #{options[:on_complete]}, "
+      options.delete(:on_complete)
     end
-    outstr += "rows: #{options[:rows]}});\n</script>"
+    outstr += "rows: #{options[:rows]},"
+    options.delete(:rows)
+    
+    # everything else is ajax options
+    outstr += "ajaxOptions: {"
+    options.each_pair do |k, v|
+      outstr += "'#{escape_javascript k.to_s}': '#{escape_javascript v.to_s}',"
+    end
+    
+    outstr += "}});\n</script>"
     return outstr
   end
 
