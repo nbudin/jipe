@@ -19,6 +19,9 @@ module Jipe
       outstr += "onComplete: #{options[:on_complete]}, "
       options.delete(:on_complete)
     end
+    if protect_against_forgery?
+      outstr += "authenticityToken: '#{form_authenticity_token}', "
+    end
     outstr += "rows: #{options[:rows]},"
     options.delete(:rows)
     
@@ -65,6 +68,9 @@ module Jipe
     
     js_options = {}
     js_options['onComplete'] = options[:on_complete] if options[:on_complete]
+    if protect_against_forgery?
+      js_options["authenticityToken"] = form_authenticity_token
+    end
     
     outstr = <<-ENDDOC
       #{image_tag true_image, :id => "#{idprefix}_true", 

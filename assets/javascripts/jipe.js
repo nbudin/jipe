@@ -38,7 +38,8 @@ Jipe.InPlaceEditor.prototype = {
       externalControl: null,
       submitOnBlur: false,
       ajaxOptions: {},
-      evalScripts: false
+      evalScripts: false,
+      authenticityToken: null
     }, options || {});
 
     if(!this.options.formId && this.element.id) {
@@ -204,8 +205,12 @@ Jipe.InPlaceEditor.prototype = {
     this.onLoading();
 
     this.record[this.field] = value;
+    extraUrlParams = {};
+    if (this.options.authenticityToken) {
+        extraUrlParams.authenticity_token = this.options.authenticityToken;
+    }
 
-    this.record.save(Object.extend({
+    this.record.save(extraUrlParams, Object.extend({
           //    parameters: this.options.callback(form, value),
           onComplete: this.onComplete.bind(this),
             onFailure: this.onFailure.bind(this)
@@ -315,7 +320,8 @@ Jipe.ImageToggle.prototype = {
       highlightcolor: Jipe.ImageToggle.defaultHighlightColor,
       highlightendcolor: "#FFFFFF",
       ajaxOptions: {},
-      evalScripts: false
+      evalScripts: false,
+      authenticityToken: null
     }, options || {});
 
     this.originalBackground = Element.getStyle(this.trueElement, 'background-color');
@@ -375,7 +381,11 @@ Jipe.ImageToggle.prototype = {
     this.record = record;
     if (this.record[this.field] != this.desiredState) {
       this.record[this.field] = this.desiredState;
-      this.record.save(this.onComplete.bind(this));
+      extraUrlOptions = {};
+      if (this.options.authenticityToken) {
+          extraUrlOptions.authenticity_token = this.options.authenticityToken;
+      }
+      this.record.save(extraUrlOptions, this.onComplete.bind(this));
     } else {
       this.onComplete();
     }
