@@ -46,8 +46,8 @@ module Jipe
     ENDDOC
     if options[:editing]
       outstr += <<-ENDDOC
-        #{ options[:external_control] ? image_tag("edit-field.png",
-          { :id => "edit_#{rclass.downcase}_#{record.id}_#{field}", :plugin => 'jipe' }) : "" }
+        #{ options[:external_control] ? image_tag("jipe/edit-field.png",
+          { :id => "edit_#{rclass.downcase}_#{record.id}_#{field}" }) : "" }
         #{ jipe_editor_for(record, field, options)}
       ENDDOC
     end
