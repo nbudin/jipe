@@ -1,6 +1,18 @@
 # Jipe
 
 module Jipe
+  def jipe_id_for(record, field, options = {})
+    options = {
+      :class => record.class.to_s,
+      :id => nil }.update(options || {})
+    rclass = options[:class]
+    if options[:id]
+      return options[:id]
+    else
+      return "#{rclass.downcase}_#{record.id}_#{field}"
+    end
+  end
+
   def jipe_editor_for(record, field, options = {})
     options = { :external_control => true,
       :class => record.class.to_s,
@@ -8,11 +20,11 @@ module Jipe
     rclass = options[:class]
     outstr = <<-ENDDOC
       <script type="text/javascript">
-        new Jipe.InPlaceEditor("#{rclass.downcase}_#{record.id}_#{field}",
+        new Jipe.InPlaceEditor("#{jipe_id_for(record, field, options)}",
           #{rclass}, #{record.id}, #{field.to_json}, {
     ENDDOC
     if options[:external_control]
-      outstr += "externalControl: 'edit_#{rclass.downcase}_#{record.id}_#{field}', "
+      outstr += "externalControl: 'edit_#{jipe_id_for(record, field, options)}', "
       options.delete(:external_control)
     end
     if options[:on_complete]
@@ -24,6 +36,7 @@ module Jipe
     end
     outstr += "rows: #{options[:rows]},"
     options.delete(:rows)
+    options.delete(:id)
     
     # everything else is ajax options
     outstr += "ajaxOptions: {"
@@ -43,14 +56,14 @@ module Jipe
       :on_complete => nil }.update(options || {})
     rclass = options[:class]
     outstr = <<-ENDDOC
-      <span id="#{rclass.downcase}_#{record.id}_#{field}">
+      <span id="#{jipe_id_for(record, field, options)}">
         #{record.send(field)}
       </span>
     ENDDOC
     if options[:editing]
       outstr += <<-ENDDOC
-        #{ options[:external_control] ? image_tag("edit-field.png",
-          { :id => "edit_#{rclass.downcase}_#{record.id}_#{field}", :plugin => 'jipe' }) : "" }
+        #{ options[:external_control] ? image_tag("jipe/edit-field.png",
+          { :id => "edit_#{jipe_id_for(record, field, options)}" }) : "" }
         #{ jipe_editor_for(record, field, options)}
       ENDDOC
     end
@@ -64,7 +77,7 @@ module Jipe
     }.update(options || {})
     rclass = options[:class]
     value = record.send(field)
-    idprefix = "#{rclass.downcase}_#{record.id}_#{field}"
+    idprefix = jipe_id_for(record, field, options)
     
     js_options = {}
     js_options['onComplete'] = options[:on_complete] if options[:on_complete]
