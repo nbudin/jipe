@@ -1,4 +1,5 @@
 class JipeController < ApplicationController
+  unloadable
   layout nil
   
   def jester
