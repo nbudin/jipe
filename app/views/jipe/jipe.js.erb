@@ -71,6 +71,8 @@ Jipe.InPlaceEditor.prototype = {
       Event.observe(this.options.externalControl, 'mouseover', this.mouseoverListener);
       Event.observe(this.options.externalControl, 'mouseout', this.mouseoutListener);
     }
+	
+	this.element.jipeEditor = this;
   },
   enterEditMode: function(evt) {
     if (this.saving) return;

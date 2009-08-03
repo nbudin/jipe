@@ -20,7 +20,7 @@ module Jipe
     rclass = options[:class]
     outstr = <<-ENDDOC
       <script type="text/javascript">
-        new Jipe.InPlaceEditor("#{jipe_id_for(record, field, options)}",
+          new Jipe.InPlaceEditor("#{jipe_id_for(record, field, options)}",
           #{rclass}, #{record.id}, #{field.to_json}, {
     ENDDOC
     if options[:external_control]
