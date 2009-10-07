@@ -43,6 +43,9 @@ module Jipe
     options.each_pair do |k, v|
       outstr << "'#{escape_javascript k.to_s}': '#{escape_javascript v.to_s}',"
     end
+    unless options[:attributes]
+      outstr << "'attributes[]': '#{escape_javascript field.to_s}'"
+    end
     
     outstr << "}});\n</script>"
     return outstr
