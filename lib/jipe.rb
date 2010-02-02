@@ -24,27 +24,30 @@ module Jipe
           #{rclass}, #{record.id}, #{field.to_json}, {
     ENDDOC
     if options[:external_control]
-      outstr += "externalControl: 'edit_#{jipe_id_for(record, field, options)}', "
+      outstr << "externalControl: 'edit_#{jipe_id_for(record, field, options)}', "
       options.delete(:external_control)
     end
     if options[:on_complete]
-      outstr += "onComplete: #{options[:on_complete]}, "
+      outstr << "onComplete: #{options[:on_complete]}, "
       options.delete(:on_complete)
     end
     if protect_against_forgery?
-      outstr += "authenticityToken: '#{form_authenticity_token}', "
+      outstr << "authenticityToken: '#{form_authenticity_token}', "
     end
-    outstr += "rows: #{options[:rows]},"
+    outstr << "rows: #{options[:rows]},"
     options.delete(:rows)
     options.delete(:id)
     
     # everything else is ajax options
-    outstr += "ajaxOptions: {"
+    outstr << "ajaxOptions: {"
     options.each_pair do |k, v|
-      outstr += "'#{escape_javascript k.to_s}': '#{escape_javascript v.to_s}',"
+      outstr << "'#{escape_javascript k.to_s}': '#{escape_javascript v.to_s}',"
+    end
+    unless options[:attributes]
+      outstr << "'attributes[]': '#{escape_javascript field.to_s}'"
     end
     
-    outstr += "}});\n</script>"
+    outstr << "}});\n</script>"
     return outstr
   end
 
