@@ -60,7 +60,7 @@ module Jipe
     rclass = options[:class]
     outstr = <<-ENDDOC
       <span id="#{jipe_id_for(record, field, options)}">
-        #{sanitize record.send(field).to_s}
+        #{record.send(field).to_s}
       </span>
     ENDDOC
     if options[:editing]
