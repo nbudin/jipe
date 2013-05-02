@@ -1,6 +1,9 @@
 require 'jipe/version'
 
 module Jipe
+  class Engine < Rails::Engine
+  end
+  
   def jipe_id_for(record, field, options = {})
     options = {
       :class => record.class.to_s,
