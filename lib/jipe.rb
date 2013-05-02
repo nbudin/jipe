@@ -1,4 +1,4 @@
-# Jipe
+require 'jipe/version'
 
 module Jipe
   def jipe_id_for(record, field, options = {})
