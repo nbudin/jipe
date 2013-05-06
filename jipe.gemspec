@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "jipe"
   spec.version       = Jipe::VERSION
   spec.authors       = ["Nat Budin"]
-  spec.email         = ["nbudin@patientslikeme.com"]
+  spec.email         = ["natbudin@gmail.com"]
   spec.description   = %q{TODO: Write a gem description}
   spec.summary       = %q{TODO: Write a gem summary}
   spec.homepage      = ""
@@ -20,4 +20,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency "rails", ">= 3.0.0"
 end
