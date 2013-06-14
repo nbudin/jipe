@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Jipe::VERSION
   spec.authors       = ["Nat Budin"]
   spec.email         = ["natbudin@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{An in-place editor for Jester}
+  spec.summary       = %q{A clone of Prototype's in-place edit controls for Thoughtbot's jester.js.  You might not wanna use this now that jQuery exists, but, in case you do, here it is.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
