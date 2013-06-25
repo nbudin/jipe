@@ -93,7 +93,7 @@ module Jipe
       js_options = {}
       js_options['onComplete'] = options.delete(:on_complete) if options[:on_complete]
       if protect_against_forgery?
-        js_options["authenticityToken"] = form_authenticity_token
+        js_options["authenticityToken"] = form_authenticity_token.to_json
       end
       options.each do |k, v|
         if v.nil?
@@ -126,7 +126,7 @@ module Jipe
       js_options = {}
       js_options['onComplete'] = options[:on_complete] if options[:on_complete]
       if protect_against_forgery?
-        js_options["authenticityToken"] = form_authenticity_token
+        js_options["authenticityToken"] = form_authenticity_token.to_json
       end
     
       outstr = <<-ENDDOC
